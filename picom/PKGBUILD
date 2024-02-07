@@ -1,0 +1,75 @@
+# Maintainer: Will Hopkins <willothyh@gmail.com>
+
+pkgbase=picom
+pkgname=picom-willothy
+pkgver=heads.main.0.g3978f81
+pkgrel=1
+pkgdesc="Picom fork with Luajit and lots of features"
+url='https://github.com/willothy/picom'
+arch=('x86_64')
+license=('GPL2')
+depends=(
+  'luajit'
+  # 'libx11'
+  # 'libx11-xcb'
+  # 'libXext'
+  # 'xproto'
+  # 'xcb'
+  # 'xcb-util'
+  # 'xcb-damage'
+  # 'xcb-dpms'
+  # 'xcb-xfixes'
+  # 'xcb-shape'
+  # 'xcb-renderutil'
+  # 'xcb-render'
+  # 'xcb-randr'
+  # 'xcb-composite'
+  # 'xcb-image'
+  # 'xcb-present'
+  # 'xcb-glx'
+  # 'pixman'
+  # 'libconfig'
+  # 'libdbus'
+  # 'libGL'
+  # 'libEGL'
+  # 'libpcre2'
+  # 'libev'
+  # 'uthash'
+)
+makedepends=(
+  'git'
+  'meson'
+  'ninja'
+)
+provides=(
+  'picom'
+)
+conflicts=(
+  'picom'
+)
+backup=()
+source=(
+  "$pkgbase::git+https://github.com/willothy/picom.git"
+)
+sha256sums=(
+  'SKIP'
+)
+
+pkgver() {
+  cd "$pkgbase" || exit 1
+
+  git describe --all --long | sed 's/^v//;s/[-\/]/./g'
+}
+
+build() {
+  cd "$pkgbase" || exit 1
+
+  meson setup -Dprefix="/usr" --buildtype=release build
+  ninja -C build
+}
+
+package() {
+  cd "$pkgbase" || exit 1
+
+  ninja -C build install
+}
