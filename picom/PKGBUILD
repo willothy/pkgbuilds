@@ -43,33 +43,36 @@ makedepends=(
 )
 provides=(
   'picom'
+  'compton'
 )
 conflicts=(
   'picom'
+  'picom-git'
+  'picom-ftlabs-git'
 )
 backup=()
 source=(
-  "$pkgname::git+https://github.com/willothy/picom.git"
+  "$pkgbase::git+https://github.com/willothy/picom.git"
 )
 sha256sums=(
   'SKIP'
 )
 
 pkgver() {
-  cd "$pkgname" || exit 1
+  cd "$pkgbase" || exit 1
 
   git describe --all --long | sed 's/^v//;s/[-\/]/./g'
 }
 
 build() {
-  cd "$pkgname" || exit 1
+  cd "$srcdir/$pkgbase" || exit 1
 
-  meson setup -Dprefix="/usr" --buildtype=release build
+  meson --buildtype=release . build --prefix=/usr
   ninja -C build
 }
 
 package() {
-  cd "$pkgname" || exit 1
+  cd "$srcdir/$pkgbase" || exit 1
 
-  ninja -C build install
+  DESTDIR="$pkgdir" ninja -C build install
 }
