@@ -2,7 +2,7 @@
 
 pkgbase=picom
 pkgname=picom-willothy
-pkgver=heads.main.0.g3978f81
+pkgver=heads.main.0.gbbfad36
 pkgrel=1
 pkgdesc="Picom fork with Luajit and lots of features"
 url='https://github.com/willothy/picom'
@@ -49,27 +49,27 @@ conflicts=(
 )
 backup=()
 source=(
-  "$pkgbase::git+https://github.com/willothy/picom.git"
+  "$pkgname::git+https://github.com/willothy/picom.git"
 )
 sha256sums=(
   'SKIP'
 )
 
 pkgver() {
-  cd "$pkgbase" || exit 1
+  cd "$pkgname" || exit 1
 
   git describe --all --long | sed 's/^v//;s/[-\/]/./g'
 }
 
 build() {
-  cd "$pkgbase" || exit 1
+  cd "$pkgname" || exit 1
 
   meson setup -Dprefix="/usr" --buildtype=release build
   ninja -C build
 }
 
 package() {
-  cd "$pkgbase" || exit 1
+  cd "$pkgname" || exit 1
 
   ninja -C build install
 }
